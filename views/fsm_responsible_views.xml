@@ -1,1 +1,36 @@
-
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="menu_fsm_responsible_root" name="FSM Responsibility" parent="industry_fsm.fsm_menu_settings" sequence="60"/>
+    <record id="view_fsm_responsible_tree" model="ir.ui.view">
+        <field name="name">fsm.responsible.day.tree</field>
+        <field name="model">fsm.responsible.day</field>
+        <field name="arch" type="xml">
+            <tree editable="bottom">
+                <field name="date"/>
+                <field name="user_id"/>
+            </tree>
+        </field>
+    </record>
+    <record id="view_fsm_responsible_form" model="ir.ui.view">
+        <field name="name">fsm.responsible.day.form</field>
+        <field name="model">fsm.responsible.day</field>
+        <field name="arch" type="xml">
+            <form string="Daily FSM Responsible">
+                <sheet><group><field name="date"/><field name="user_id"/></group></sheet>
+            </form>
+        </field>
+    </record>
+    <record id="view_fsm_responsible_calendar" model="ir.ui.view">
+        <field name="name">fsm.responsible.day.calendar</field>
+        <field name="model">fsm.responsible.day</field>
+        <field name="arch" type="xml">
+            <calendar string="FSM Responsible" date_start="date" color="user_id"><field name="user_id"/></calendar>
+        </field>
+    </record>
+    <record id="action_fsm_responsible" model="ir.actions.act_window">
+        <field name="name">Daily FSM Responsible</field>
+        <field name="res_model">fsm.responsible.day</field>
+        <field name="view_mode">tree,calendar,form</field>
+    </record>
+    <menuitem id="menu_fsm_responsible" name="Daily Responsible" parent="menu_fsm_responsible_root" action="action_fsm_responsible" sequence="10"/>
+</odoo>
