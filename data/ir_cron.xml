@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <record id="ir_cron_fsm_activity_realign" model="ir.cron">
+    <field name="name">FSM Activities: Realign Upcoming</field>
+    <field name="model_id" ref="base.model_ir_actions_server"/>
+    <field name="state">code</field>
+    <field name="code">model.env['mail.activity']._cron_fsm_realign_upcoming()</field>
+    <field name="interval_type">minutes</field>
+    <field name="interval_number">30</field>
+    <field name="numbercall">-1</field>
+    <field name="active">True</field>
+  </record>
+</odoo>
