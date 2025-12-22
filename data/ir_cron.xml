@@ -10,4 +10,14 @@
     <field name="numbercall">-1</field>
     <field name="active">True</field>
   </record>
+  <record id="ir_cron_fsm_responsible_coverage_check" model="ir.cron">
+    <field name="name">FSM Responsible: Coverage Check</field>
+    <field name="model_id" ref="base.model_ir_actions_server"/>
+    <field name="state">code</field>
+    <field name="code">model.env['fsm.responsible.day']._cron_fsm_responsible_coverage_check()</field>
+    <field name="interval_type">days</field>
+    <field name="interval_number">1</field>
+    <field name="numbercall">-1</field>
+    <field name="active">True</field>
+  </record>
 </odoo>

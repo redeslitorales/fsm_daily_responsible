@@ -8,6 +8,7 @@
     "depends": ["industry_fsm", "project", "mail"],
     "data": [
         "security/ir.model.access.csv",
+        "security/fsm_responsible_groups.xml",
         "views/fsm_responsible_views.xml",
         "data/ir_cron.xml"
     ],

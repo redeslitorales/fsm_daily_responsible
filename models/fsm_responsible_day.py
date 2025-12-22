@@ -1,5 +1,9 @@
+import logging
+
 from odoo import api, fields, models, _
 from odoo.exceptions import ValidationError
+
+_logger = logging.getLogger(__name__)
 
 class FSMResponsibleDay(models.Model):
     _name = "fsm.responsible.day"
@@ -38,3 +42,33 @@ class FSMResponsibleDay(models.Model):
             for rec in self:
                 self._reassign_activities_for_date(rec.date)
         return res
+
+    @api.model
+    def _cron_fsm_responsible_coverage_check(self):
+        today = fields.Date.context_today(self)
+        upcoming_dates = [fields.Date.add(today, days=offset) for offset in range(7)]
+        existing_dates = set(self.search([("date", "in", upcoming_dates)]).mapped("date"))
+        missing_dates = sorted(set(upcoming_dates) - existing_dates)
+        if not missing_dates:
+            return True
+        group = self.env.ref("fsm_daily_responsible.group_fsm_responsible_admin", raise_if_not_found=False)
+        if not group:
+            _logger.warning("FSM Responsible admin group not found; cannot send missing coverage alert.")
+            return True
+        emails = [user.email for user in group.users if user.email]
+        if not emails:
+            _logger.warning("FSM Responsible admin group has no users with email addresses.")
+            return True
+        body = _(
+            "The following dates do not have an assigned daily FSM responsible: %s.<br/>"
+            "Please assign a user today in the Daily FSM Responsible schedule."
+        ) % ", ".join(fields.Date.to_string(d) for d in missing_dates)
+        mail = self.env["mail.mail"].create(
+            {
+                "subject": _("FSM Responsible coverage is missing for the next 7 days"),
+                "body_html": body,
+                "email_to": ",".join(emails),
+            }
+        )
+        mail.send()
+        return True
