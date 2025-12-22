@@ -1,1 +1,3 @@
-
+"id","name","model_id:id","group_id:id","perm_read","perm_write","perm_create","perm_unlink"
+"access_fsm_responsible_day_user","fsm.responsible.day user","model_fsm_responsible_day","base.group_user",1,1,1,0
+"access_fsm_generate_schedule_wizard","fsm.generate.schedule wizard","model_fsm_generate_schedule_wizard","base.group_user",1,1,1,0
