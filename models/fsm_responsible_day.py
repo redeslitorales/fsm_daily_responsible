@@ -63,11 +63,14 @@ class FSMResponsibleDay(models.Model):
             "The following dates do not have an assigned daily FSM responsible: %s.<br/>"
             "Please assign a user today in the Daily FSM Responsible schedule."
         ) % ", ".join(fields.Date.to_string(d) for d in missing_dates)
+        mail_from = self.env['ir.config_parameter'].sudo().get_param('mail.default.from') or 'administracion@redeslitorales.com'
         mail = self.env["mail.mail"].create(
             {
                 "subject": _("FSM Responsible coverage is missing for the next 7 days"),
                 "body_html": body,
                 "email_to": ",".join(emails),
+                "reply_to": mail_from,
+                "email_from": mail_from,
             }
         )
         mail.send()
